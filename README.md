@@ -1,8 +1,8 @@
-# RESTful API mit Node.js und Express.js
+# Frontend für die RESTful API mit Node.js und Express.js
 
-Erstelle deine erste eigene REST API mit SQLite und Node.js. Ich gehe Schritt für Schritt durch den Prozess, von der Initialisierung der Datenbank bis hin zur Erstellung der API-Endpunkte. Du wirst erfahren, wie du Daten in eine SQLite-Datenbank speichern und abrufen kannst und wie du diese Daten über die API bereitstellst. Am Ende des Videos hast du ein solides Verständnis dafür, wie du eine eigene API erstellen kannst. Dieses Video ist sowohl für Anfänger als auch für Fortgeschrittene geeignet, die ihre Kenntnisse in Node.js und SQLite vertiefen möchten. Happy Coding!
+Erstelle eine kleine Frontend Application mit JavaScript und Bootstrap und verwende dabei deine erste RESTful API um Daten anzuzeigen, zu bearbeiten und zu löschen. Durch dieses Tutorial erhältst du einen ersten Einblick wie eine mögliche Anwendung bestehend aus Backend und Frontend umgesetzt wird. Happy Coding!
 
-[![Tutorial bei Youtube](http://img.youtube.com/vi/pWgkLCfF_N0/0.jpg)](https://youtu.be/pWgkLCfF_N0)
+[![Tutorial bei Youtube](http://img.youtube.com/vi/wsWWuFxw2-E/0.jpg)](https://youtu.be/wsWWuFxw2-E)
 
 ## 📺 Playlists
 
