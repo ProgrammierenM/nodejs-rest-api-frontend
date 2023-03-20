@@ -124,8 +124,10 @@ function todoApp() {
     // Edit
     let editIcon = this.container.querySelector(`#edit-todo-${todo.id}`);
     editIcon.addEventListener("click", () => {
-      this.currentTodo = todo;
-      this.changeMode("form");
+      this.getTodo(todo).then((json) => {
+        this.currentTodo = json.data;
+        this.changeMode("form");
+      });
     });
 
     // Delete
@@ -165,7 +167,12 @@ function todoApp() {
             </div>
             <button type="submit" id="todo-submit" class="btn btn-primary" data-id="${
               this.currentTodo.id
-            }">Absenden</button>
+            }">Speichern</button>
+            ${
+              this.currentTodo.id === 0
+                ? `<button type="submit" id="todo-submit-next" class="btn btn-info" data-id="${this.currentTodo.id}">Noch eins</button>`
+                : ""
+            }
           </form>
         </div>
       </div>
@@ -173,33 +180,53 @@ function todoApp() {
 
     this.container.insertAdjacentHTML("beforeend", html);
 
+    // Speichern
     let element = this.container.querySelector("#todo-submit");
     element.addEventListener("click", (event) => {
-      event.preventDefault();
-
-      let name = this.container.querySelector("#todo-title").value;
-      let description = this.container.querySelector("#todo-description").value;
-      let completed = this.container.querySelector("#todo-completed").checked;
-
-      let todo = {
-        id: parseInt(event.target.dataset.id),
-        name,
-        description,
-        completed: completed ? 1 : 0,
-      };
-
-      if (todo.id > 0) {
-        this.updateTodo(todo).then(() => {
-          this.changeMode("list");
-        });
-      }
-
-      if (todo.id === 0) {
-        this.setTodo(todo).then(() => {
-          this.changeMode("list");
-        });
-      }
+      this.saveTodoHandler(event);
     });
+
+    // Noch eins
+    if (this.currentTodo.id === 0) {
+      let elementNext = this.container.querySelector("#todo-submit-next");
+      elementNext.addEventListener("click", (event) => {
+        this.saveTodoHandler(event, "next");
+      });
+    }
+  };
+
+  this.saveTodoHandler = function (event, mode = "save") {
+    event.preventDefault();
+
+    let name = this.container.querySelector("#todo-title").value;
+    let description = this.container.querySelector("#todo-description").value;
+    let completed = this.container.querySelector("#todo-completed").checked;
+
+    let todo = {
+      id: parseInt(event.target.dataset.id),
+      name,
+      description,
+      completed: completed ? 1 : 0,
+    };
+
+    if (todo.id > 0) {
+      this.updateTodo(todo).then(() => {
+        this.changeMode("list");
+      });
+    }
+
+    if (todo.id === 0 && mode === "save") {
+      this.setTodo(todo).then(() => {
+        this.changeMode("list");
+      });
+    }
+
+    if (todo.id === 0 && mode === "next") {
+      this.setTodo(todo).then(() => {
+        this.resetCurrentTodo();
+        this.changeMode("form");
+      });
+    }
   };
 
   this.getAllTodos = function () {
@@ -207,6 +234,15 @@ function todoApp() {
       for (let i = 0; i < json.data.length; i++) {
         this.printTodo(json.data[i]);
       }
+    });
+  };
+
+  this.getTodo = function (todo) {
+    return this.apiHandler(
+      `http://localhost:8000/api/todo/${todo.id}`,
+      "GET"
+    ).then((json) => {
+      return json;
     });
   };
 
